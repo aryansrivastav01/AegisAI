@@ -1,33 +1,36 @@
 import json
 
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, File, HTTPException, UploadFile
+
+from app.services.ioc_extractor import extract_iocs
 
 router = APIRouter()
-
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
 
 
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
+    """
+    Upload a JSON log file and extract IOCs.
+    """
 
-    # Step 1: Extension Validation
+    # Allow only JSON files
     if not file.filename.endswith(".json"):
         raise HTTPException(
             status_code=400,
             detail="Only JSON files are allowed."
         )
 
-    # Step 2: Read File (Only Once)
+    # Read file content
     content = await file.read()
 
-    # Step 3: File Size Validation
-    if len(content) > MAX_FILE_SIZE:
+    # Maximum file size: 5 MB
+    if len(content) > 5 * 1024 * 1024:
         raise HTTPException(
-            status_code=413,
+            status_code=400,
             detail="File size exceeds 5 MB."
         )
 
-    # Step 4: JSON Validation
+    # Parse JSON
     try:
         data = json.loads(content)
     except json.JSONDecodeError:
@@ -36,11 +39,14 @@ async def upload_file(file: UploadFile = File(...)):
             detail="Invalid JSON file."
         )
 
-    # Step 5: Success Response
+    # Convert JSON object into text
+    text = json.dumps(data)
+
+    # Extract IOCs
+    iocs = extract_iocs(text)
+
     return {
-        "message": "JSON file uploaded successfully.",
-        "filename": file.filename,
-        "content_type": file.content_type,
-        "file_size": len(content),
-        "data": data
+        "message": "File uploaded successfully.",
+        "uploaded_data": data,
+        "iocs": iocs,
     }
