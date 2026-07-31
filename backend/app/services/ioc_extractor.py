@@ -1,14 +1,27 @@
 import re
 
+from app.utils.validators import (
+    normalize_domain,
+    remove_duplicates,
+    validate_ip,
+)
+
 
 def extract_ips(text: str) -> list[str]:
     """
-    Extract IPv4 addresses from text.
+    Extract valid IPv4 addresses from text.
     """
 
     ip_pattern = r"\b(?:\d{1,3}\.){3}\d{1,3}\b"
 
-    return re.findall(ip_pattern, text)
+    ips = re.findall(ip_pattern, text)
+
+    valid_ips = [
+        ip for ip in ips
+        if validate_ip(ip)
+    ]
+
+    return remove_duplicates(valid_ips)
 
 
 def extract_domains(text: str) -> list[str]:
@@ -21,7 +34,14 @@ def extract_domains(text: str) -> list[str]:
         r"(?:com|org|net|edu|gov|io|co|in|ru|xyz|info|biz)\b"
     )
 
-    return re.findall(domain_pattern, text)
+    domains = re.findall(domain_pattern, text)
+
+    normalized = [
+        normalize_domain(domain)
+        for domain in domains
+    ]
+
+    return remove_duplicates(normalized)
 
 
 def extract_urls(text: str) -> list[str]:
@@ -31,7 +51,9 @@ def extract_urls(text: str) -> list[str]:
 
     url_pattern = r"https?://[^\s]+"
 
-    return re.findall(url_pattern, text)
+    urls = re.findall(url_pattern, text)
+
+    return remove_duplicates(urls)
 
 
 def extract_hashes(text: str) -> list[str]:
@@ -47,12 +69,14 @@ def extract_hashes(text: str) -> list[str]:
         r")\b"
     )
 
-    return re.findall(hash_pattern, text)
+    hashes = re.findall(hash_pattern, text)
+
+    return remove_duplicates(hashes)
 
 
 def extract_iocs(text: str) -> dict:
     """
-    Extract all supported IOCs from text.
+    Extract all supported IOCs.
     """
 
     return {
@@ -66,27 +90,35 @@ def extract_iocs(text: str) -> dict:
 if __name__ == "__main__":
 
     sample_log = """
-    User connected to 192.168.1.10
+    Connection:
+    192.168.1.10
 
-    DNS Server: 8.8.8.8
+    Invalid:
+    999.999.999.999
 
-    Downloaded payload:
-    http://evil-login.ru/update.exe
+    DNS:
+    8.8.8.8
 
-    Login Portal:
-    https://portal.microsoftonline.com/login
+    Duplicate:
+    8.8.8.8
 
-    Search:
+    GOOGLE.COM
+
     google.com
+
+    Google.com
+
+    https://github.com
+
+    https://github.com
+
+    http://evil-login.ru/update.exe
 
     MD5:
     44d88612fea8a8f36de82e1278abb02f
 
-    SHA1:
-    2fd4e1c67a2d28fced849ee1bb76e7391b93eb12
-
-    SHA256:
-    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    MD5:
+    44d88612fea8a8f36de82e1278abb02f
     """
 
     print(extract_iocs(sample_log))
