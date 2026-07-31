@@ -11,7 +11,10 @@ class Settings(BaseSettings):
 
     openai_api_key: str = ""
     virustotal_api_key: str = ""
+    abuseipdb_api_key: str = ""      # ⭐ NEW
+
     database_url: str = ""
+
     ollama_base_url: str
 
     model_config = SettingsConfigDict(
