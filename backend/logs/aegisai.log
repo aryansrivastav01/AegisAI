@@ -1,0 +1,10 @@
+2026-08-01 12:54:41,074 | INFO | AegisAI | Received file 'sample.json' (33 bytes)
+2026-08-01 12:54:41,075 | INFO | AegisAI | IOC Extraction Complete | IPs=0 Domains=0 URLs=0 Hashes=0
+2026-08-01 12:54:41,075 | INFO | AegisAI | Threat Intelligence Analysis Started
+2026-08-01 12:54:41,075 | INFO | AegisAI | Threat Intelligence Analysis Completed
+2026-08-01 12:54:41,075 | INFO | AegisAI | Analysis Completed Successfully
+2026-08-01 12:54:42,390 | INFO | AegisAI | Received file 'sample.json' (33 bytes)
+2026-08-01 12:54:42,391 | INFO | AegisAI | IOC Extraction Complete | IPs=0 Domains=0 URLs=0 Hashes=0
+2026-08-01 12:54:42,391 | INFO | AegisAI | Threat Intelligence Analysis Started
+2026-08-01 12:54:42,391 | INFO | AegisAI | Threat Intelligence Analysis Completed
+2026-08-01 12:54:42,391 | INFO | AegisAI | Analysis Completed Successfully
