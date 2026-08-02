@@ -8,3 +8,9 @@
 2026-08-01 12:54:42,391 | INFO | AegisAI | Threat Intelligence Analysis Started
 2026-08-01 12:54:42,391 | INFO | AegisAI | Threat Intelligence Analysis Completed
 2026-08-01 12:54:42,391 | INFO | AegisAI | Analysis Completed Successfully
+2026-08-03 00:02:56,662 | INFO | AegisAI | Received file 'sample.json' (33 bytes)
+2026-08-03 00:02:56,662 | INFO | AegisAI | IOC Extraction Complete | IPs=0 Domains=0 URLs=0 Hashes=0
+2026-08-03 00:02:56,662 | INFO | AegisAI | Threat Intelligence Analysis Started
+2026-08-03 00:02:56,663 | INFO | AegisAI | Threat Intelligence Analysis Completed
+2026-08-03 00:03:25,731 | INFO | AegisAI | AI Analysis Completed
+2026-08-03 00:03:25,731 | INFO | AegisAI | Analysis Completed Successfully

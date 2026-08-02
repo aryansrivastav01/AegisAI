@@ -3,44 +3,39 @@ import asyncio
 from app.services.ai_service import AIService
 
 
-sample_report = {
-    "summary": {
-        "overall_risk": "Low",
-        "total_ips": 2,
-        "total_domains": 1,
-        "total_urls": 0,
-        "total_hashes": 0,
-    },
-    "threat_intelligence": {
-        "ips": [
-            {
-                "ioc": "8.8.8.8",
-                "overall_reputation": "Clean",
-            },
-            {
-                "ioc": "1.1.1.1",
-                "overall_reputation": "Clean",
-            },
-        ]
-    },
-}
-
-
 async def main():
+    threat_report = {
+        "summary": {
+            "overall_risk": "Clean",
+            "total_ips": 2,
+            "total_domains": 0,
+            "total_urls": 0,
+            "total_hashes": 0,
+        },
+        "threat_intelligence": {
+            "ips": [
+                {
+                    "ioc": "8.8.8.8",
+                    "overall_reputation": "Clean",
+                },
+                {
+                    "ioc": "1.1.1.1",
+                    "overall_reputation": "Clean",
+                },
+            ],
+            "domains": [],
+            "urls": [],
+            "hashes": [],
+        },
+    }
 
     ai = AIService()
 
-    response = await ai.analyze(
-        sample_report
-    )
+    result = await ai.analyze(threat_report)
 
-    print()
-
-    print("=" * 60)
-
-    print(response)
-
-    print("=" * 60)
+    print("\n" + "=" * 80)
+    print(result.model_dump_json(indent=4))
+    print("=" * 80)
 
 
 if __name__ == "__main__":

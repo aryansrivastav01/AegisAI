@@ -3,31 +3,38 @@ import json
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
 from app.core.logger import logger
+from app.schemas.upload import IOCSummary
+from app.services.ai_service import AIService
 from app.services.ioc_extractor import extract_iocs
 from app.services.threat_intel import ThreatIntelService
 
 router = APIRouter()
 
 threat_service = ThreatIntelService()
+ai_service = AIService()
 
 
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     """
     Upload a JSON log file, extract IOCs,
-    enrich them using Threat Intelligence,
-    and return the analysis.
+    perform threat intelligence lookup,
+    and generate an AI security report.
     """
 
-    # Validate extension
     if not file.filename.endswith(".json"):
         raise HTTPException(
             status_code=400,
-            detail="Only JSON files are allowed."
+            detail="Only JSON files are allowed.",
         )
 
-    # Read uploaded file
     content = await file.read()
+
+    if len(content) > 5 * 1024 * 1024:
+        raise HTTPException(
+            status_code=400,
+            detail="File size exceeds 5 MB.",
+        )
 
     logger.info(
         "Received file '%s' (%d bytes)",
@@ -35,26 +42,17 @@ async def upload_file(file: UploadFile = File(...)):
         len(content),
     )
 
-    # Validate file size (5 MB)
-    if len(content) > 5 * 1024 * 1024:
-        raise HTTPException(
-            status_code=400,
-            detail="File size exceeds 5 MB."
-        )
-
-    # Parse JSON
     try:
         data = json.loads(content)
+
     except json.JSONDecodeError:
         raise HTTPException(
             status_code=400,
-            detail="Invalid JSON file."
+            detail="Invalid JSON file.",
         )
 
-    # Convert JSON object to searchable text
     text = json.dumps(data)
 
-    # Extract IOCs
     iocs = extract_iocs(text)
 
     logger.info(
@@ -65,18 +63,55 @@ async def upload_file(file: UploadFile = File(...)):
         len(iocs["hashes"]),
     )
 
-    # Threat Intelligence
     logger.info("Threat Intelligence Analysis Started")
 
-    threat_intelligence = await threat_service.analyze_iocs(iocs)
+    threat_report = await threat_service.analyze_iocs(iocs)
 
     logger.info("Threat Intelligence Analysis Completed")
+
+    summary = {
+        "overall_risk": "Clean",
+        "total_ips": len(iocs["ips"]),
+        "total_domains": len(iocs["domains"]),
+        "total_urls": len(iocs["urls"]),
+        "total_hashes": len(iocs["hashes"]),
+    }
+
+    for ip in threat_report["ips"]:
+        reputation = ip.get("overall_reputation")
+
+        if reputation == "High Risk":
+            summary["overall_risk"] = "High Risk"
+            break
+
+        if (
+            reputation == "Medium Risk"
+            and summary["overall_risk"] != "High Risk"
+        ):
+            summary["overall_risk"] = "Medium Risk"
+
+        elif (
+            reputation == "Low Risk"
+            and summary["overall_risk"] == "Clean"
+        ):
+            summary["overall_risk"] = "Low Risk"
+
+    ai_report = await ai_service.analyze(
+        {
+            "summary": summary,
+            "threat_intelligence": threat_report,
+        }
+    )
+
+    logger.info("AI Analysis Completed")
 
     logger.info("Analysis Completed Successfully")
 
     return {
         "message": "Analysis completed successfully.",
         "uploaded_data": data,
-        "iocs": iocs,
-        "threat_intelligence": threat_intelligence,
+        "iocs": IOCSummary(**iocs).model_dump(),
+        "summary": summary,
+        "threat_intelligence": threat_report,
+        "ai_analysis": ai_report.model_dump(),
     }

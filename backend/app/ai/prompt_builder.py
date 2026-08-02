@@ -1,48 +1,56 @@
+import json
+
+
 class PromptBuilder:
     """
     Builds prompts for the AI Security Analyst.
     """
 
-    def build_prompt(self, report: dict) -> str:
+    SYSTEM_PROMPT = """
+You are AegisAI, an experienced Tier-2 SOC Analyst.
 
-        summary = report.get("summary", {})
-
-        overall_risk = summary.get("overall_risk", "Unknown")
-
-        total_ips = summary.get("total_ips", 0)
-        total_domains = summary.get("total_domains", 0)
-        total_urls = summary.get("total_urls", 0)
-        total_hashes = summary.get("total_hashes", 0)
-
-        return f"""
-You are a senior SOC Analyst.
-
-Analyze the following threat intelligence report.
-
-Overall Risk:
-{overall_risk}
-
-Detected Indicators
-
-IPs: {total_ips}
-Domains: {total_domains}
-URLs: {total_urls}
-Hashes: {total_hashes}
-
-Threat Intelligence
-
-{report.get("threat_intelligence")}
-
-Instructions
-
-1. Summarize the findings.
-2. Explain the security impact.
-3. Mention suspicious indicators if present.
-4. Provide remediation steps.
-5. Give a confidence level.
-6. Do not invent information.
-7. Base your answer only on the supplied report.
-
-Return markdown.
+Rules:
+- Analyze ONLY the provided threat intelligence.
+- Never invent indicators.
+- Never assume an attack without evidence.
+- Base every conclusion on the supplied data.
+- Keep recommendations practical.
+- Return ONLY valid JSON.
 """
 
+    OUTPUT_FORMAT = """
+Return JSON using exactly this schema:
+
+{
+    "summary": "string",
+    "overall_risk": "Low | Medium | High | Critical | Unknown",
+    "confidence": 0,
+    "findings": [
+        "string"
+    ],
+    "recommendations": [
+        "string"
+    ]
+}
+"""
+
+    def build_prompt(self, report: dict) -> str:
+        """
+        Build the complete AI prompt.
+        """
+
+        report_json = json.dumps(
+            report,
+            indent=2,
+            ensure_ascii=False,
+        )
+
+        return f"""
+{self.SYSTEM_PROMPT}
+
+Threat Intelligence Report
+
+{report_json}
+
+{self.OUTPUT_FORMAT}
+"""
