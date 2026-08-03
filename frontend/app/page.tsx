@@ -12,76 +12,49 @@ import ThreatFeedSection from "@/components/landing/sections/ThreatFeedSection";
 import AITerminalSection from "@/components/landing/sections/AITerminalSection";
 
 import Workflow from "@/components/landing/Workflow";
-import DashboardPreview from "@/components/landing/DashboardPreview";
 import Footer from "@/components/landing/Footer";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
-
-      {/* ===================== */}
-      {/* Global Background */}
-      {/* ===================== */}
+      {/* Background Effects */}
 
       <AuroraBackground />
       <MouseSpotlight />
       <CyberGrid />
       <FloatingParticles />
 
-      {/* ===================== */}
       {/* Navigation */}
-      {/* ===================== */}
 
       <Navbar />
 
-      {/* ===================== */}
       {/* Hero */}
-      {/* ===================== */}
 
       <Hero />
 
-      {/* ===================== */}
       {/* Platform Statistics */}
-      {/* ===================== */}
 
       <Stats />
 
-      {/* ===================== */}
       {/* Features */}
-      {/* ===================== */}
 
       <Features />
 
-      {/* ===================== */}
       {/* Live Threat Intelligence */}
-      {/* ===================== */}
 
       <ThreatFeedSection />
 
-      {/* ===================== */}
       {/* AI Investigation */}
-      {/* ===================== */}
 
       <AITerminalSection />
 
-      {/* ===================== */}
       {/* Workflow */}
-      {/* ===================== */}
 
       <Workflow />
 
-      {/* ===================== */}
-      {/* Platform Preview */}
-      {/* ===================== */}
-
-      <DashboardPreview />
-
-      {/* ===================== */}
       {/* Footer */}
-      {/* ===================== */}
 
       <Footer />
-
     </main>
   );
 }
