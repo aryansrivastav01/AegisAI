@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import StatCard from "./StatCard";
+import AIReport from "./analysis/AIReport";
 import { uploadSecurityLog, type UploadResponse } from "@/services/upload";
 
 export default function Overview() {
@@ -27,16 +28,20 @@ export default function Overview() {
       console.log(result);
 
       setAnalysis(result);
-    } catch (err) {
-      console.error(err);
-      alert(err instanceof Error ? err.message : "Upload failed");
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Upload failed"
+      );
     } finally {
       setLoading(false);
     }
   }
 
-  return (
-    <div className="space-y-8">
+  return (    <div className="space-y-8">
 
       <input
         ref={fileInputRef}
@@ -45,15 +50,20 @@ export default function Overview() {
         accept=".json"
         onChange={(e) => {
           const file = e.target.files?.[0];
-          if (file) void handleFile(file);
+
+          if (file) {
+            void handleFile(file);
+          }
         }}
       />
+
+      {/* Top Cards */}
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
 
         <StatCard
           title="Threat Score"
-          value={analysis ? analysis.summary.overall_risk : "82%"}
+          value={analysis?.summary.overall_risk ?? "82%"}
           icon={ShieldAlert}
           color="text-red-400"
           change="+8%"
@@ -94,7 +104,11 @@ export default function Overview() {
 
       </div>
 
+      {/* Bottom Grid */}
+
       <div className="grid gap-6 xl:grid-cols-3">
+
+        {/* Recent Activity */}
 
         <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 backdrop-blur-xl xl:col-span-2">
 
@@ -105,16 +119,18 @@ export default function Overview() {
           <div className="mt-6 space-y-4">
 
             {(analysis
-              ? [{
-                  title: "JSON Analysis Completed",
-                  risk: analysis.summary.overall_risk,
-                  color:
-                    analysis.summary.overall_risk === "High Risk"
-                      ? "text-red-400"
-                      : analysis.summary.overall_risk === "Medium Risk"
-                      ? "text-yellow-400"
-                      : "text-green-400",
-                }]
+              ? [
+                  {
+                    title: "JSON Analysis Completed",
+                    risk: analysis.summary.overall_risk,
+                    color:
+                      analysis.summary.overall_risk === "High Risk"
+                        ? "text-red-400"
+                        : analysis.summary.overall_risk === "Medium Risk"
+                        ? "text-yellow-400"
+                        : "text-green-400",
+                  },
+                ]
               : [
                   {
                     title: "Windows Event Log",
@@ -137,21 +153,29 @@ export default function Overview() {
                 className="flex items-center justify-between rounded-xl border border-white/5 bg-slate-800/40 p-4"
               >
                 <div>
-                  <h3 className="font-medium text-white">{item.title}</h3>
+
+                  <h3 className="font-medium text-white">
+                    {item.title}
+                  </h3>
+
                   <p className="text-sm text-slate-400">
                     AI investigation completed
                   </p>
+
                 </div>
 
                 <span className={`font-semibold ${item.color}`}>
                   {item.risk}
                 </span>
+
               </div>
             ))}
 
           </div>
 
         </div>
+
+        {/* Quick Actions */}
 
         <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 backdrop-blur-xl">
 
@@ -167,10 +191,16 @@ export default function Overview() {
               className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-slate-800/40 px-5 py-4 text-left text-white transition hover:border-cyan-400 hover:bg-slate-800 disabled:opacity-60"
             >
               <span>
-                {loading ? "Analyzing..." : "Upload Security Logs"}
+                {loading
+                  ? "Analyzing..."
+                  : "Upload Security Logs"}
               </span>
 
-              <ArrowRight size={18} className="text-cyan-400" />
+              <ArrowRight
+                size={18}
+                className="text-cyan-400"
+              />
+
             </button>
 
             {[
@@ -183,7 +213,12 @@ export default function Overview() {
                 className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-slate-800/40 px-5 py-4 text-left text-white transition hover:border-cyan-400 hover:bg-slate-800"
               >
                 <span>{item}</span>
-                <ArrowRight size={18} className="text-cyan-400" />
+
+                <ArrowRight
+                  size={18}
+                  className="text-cyan-400"
+                />
+
               </button>
             ))}
 
@@ -192,6 +227,12 @@ export default function Overview() {
         </div>
 
       </div>
+
+      {analysis && (
+        <AIReport
+          analysis={analysis.ai_analysis}
+        />
+      )}      
 
     </div>
   );

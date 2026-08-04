@@ -22,7 +22,13 @@ export interface UploadResponse {
 
   threat_intelligence: unknown;
 
-  ai_analysis: unknown;
+  ai_analysis: {
+  summary: string;
+  overall_risk: string;
+  confidence: number;
+  findings: string[];
+  recommendations: string[];
+};
 }
 
 export async function uploadSecurityLog(
