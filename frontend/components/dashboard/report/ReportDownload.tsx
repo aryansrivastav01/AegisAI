@@ -1,0 +1,251 @@
+"use client";
+
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { Download } from "lucide-react";
+
+import { UploadResponse } from "@/services/upload";
+
+interface ReportDownloadProps {
+  analysis: UploadResponse | null;
+}
+
+export default function ReportDownload({
+  analysis,
+}: ReportDownloadProps) {
+  if (!analysis) return null;
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+
+    doc.text(
+      "AegisAI Security Report",
+      pageWidth / 2,
+      20,
+      {
+        align: "center",
+      }
+    );
+
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+
+    doc.text(
+      `Generated: ${new Date().toLocaleString()}`,
+      14,
+      30
+    );
+
+    autoTable(doc, {
+      startY: 38,
+
+      head: [["Executive Summary"]],
+
+      body: [
+        [
+          `Overall Risk : ${analysis.ai_analysis.overall_risk}\n\n` +
+            `Confidence : ${analysis.ai_analysis.confidence}%\n\n` +
+            `Summary : ${analysis.ai_analysis.summary}`,
+        ],
+      ],
+
+      theme: "grid",
+    });
+
+    autoTable(doc, {
+      startY: (doc as any).lastAutoTable.finalY + 10,
+
+      head: [["Indicator", "Count"]],
+
+      body: [
+        [
+          "IP Addresses",
+          analysis.summary.total_ips.toString(),
+        ],
+        [
+          "Domains",
+          analysis.summary.total_domains.toString(),
+        ],
+        [
+          "URLs",
+          analysis.summary.total_urls.toString(),
+        ],
+        [
+          "Hashes",
+          analysis.summary.total_hashes.toString(),
+        ],
+      ],
+    });
+
+    autoTable(doc, {
+      startY: (doc as any).lastAutoTable.finalY + 10,
+
+      head: [["IP Addresses"]],
+
+      body:
+        analysis.iocs.ips.length > 0
+          ? analysis.iocs.ips.map((ip) => [ip])
+          : [["No IPs Detected"]],
+    });
+
+    analysis.threat_intelligence.ips.forEach(
+      (ip) => {
+        autoTable(doc, {
+          startY:
+            (doc as any).lastAutoTable.finalY +
+            10,
+
+          head: [[
+            `Threat Intelligence - ${ip.ioc}`,
+          ]],
+
+          body: [
+            [
+              `Overall Reputation: ${ip.overall_reputation}`,
+            ],
+          ],
+        });
+
+        autoTable(doc, {
+          startY:
+            (doc as any).lastAutoTable.finalY +
+            5,
+
+          head: [[
+            "Provider",
+            "Reputation",
+            "Confidence",
+          ]],
+
+          body: ip.providers.map(
+            (provider) => [
+              provider.provider,
+              provider.reputation,
+              `${provider.confidence}%`,
+            ]
+          ),
+        });
+
+        ip.providers.forEach((provider) => {          const details: [string, string][] = [];
+
+          if (provider.country) {
+            details.push([
+              "Country",
+              provider.country,
+            ]);
+          }
+
+          if (provider.network) {
+            details.push([
+              "Network",
+              provider.network,
+            ]);
+          }
+
+          if (provider.isp) {
+            details.push([
+              "ISP",
+              provider.isp,
+            ]);
+          }
+
+          if (provider.domain) {
+            details.push([
+              "Domain",
+              provider.domain,
+            ]);
+          }
+
+          if (
+            provider.total_reports !== undefined
+          ) {
+            details.push([
+              "Reports",
+              provider.total_reports.toString(),
+            ]);
+          }
+
+          if (
+            provider.is_whitelisted !== undefined
+          ) {
+            details.push([
+              "Whitelisted",
+              provider.is_whitelisted
+                ? "Yes"
+                : "No",
+            ]);
+          }
+
+          if (details.length > 0) {
+            autoTable(doc, {
+              startY:
+                (doc as any).lastAutoTable.finalY +
+                4,
+
+              head: [[provider.provider]],
+
+              body: details,
+            });
+          }
+        });
+      }
+    );
+
+    autoTable(doc, {
+      startY:
+        (doc as any).lastAutoTable.finalY +
+        10,
+
+      head: [["AI Findings"]],
+
+      body:
+        analysis.ai_analysis.findings.length > 0
+          ? analysis.ai_analysis.findings.map(
+              (finding) => [finding]
+            )
+          : [["No Findings"]],
+    });
+
+    autoTable(doc, {
+      startY:
+        (doc as any).lastAutoTable.finalY +
+        10,
+
+      head: [["Recommendations"]],
+
+      body:
+        analysis.ai_analysis.recommendations.map(
+          (recommendation) => [
+            recommendation,
+          ]
+        ),
+    });
+
+    doc.setFontSize(10);
+
+    doc.text(
+      "Generated by AegisAI",
+      pageWidth / 2,
+      doc.internal.pageSize.getHeight() - 10,
+      {
+        align: "center",
+      }
+    );
+
+    doc.save("AegisAI_Report.pdf");
+  };  return (
+    <button
+      onClick={generatePDF}
+      className="flex w-full items-center justify-center gap-2 rounded-xl border border-cyan-500 bg-cyan-500/10 px-5 py-4 font-medium text-cyan-400 transition hover:bg-cyan-500/20"
+    >
+      <Download size={18} />
+
+      Download Security Report (PDF)
+    </button>
+  );
+}
