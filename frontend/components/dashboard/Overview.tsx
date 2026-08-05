@@ -11,6 +11,8 @@ import {
 
 import StatCard from "./StatCard";
 import AIReport from "./analysis/AIReport";
+import IOCPanel from "./ioc/IOCPanel";
+import ThreatIntelPanel from "./threat/ThreatIntelPanel";
 import { uploadSecurityLog, type UploadResponse } from "@/services/upload";
 
 export default function Overview() {
@@ -229,10 +231,21 @@ export default function Overview() {
       </div>
 
       {analysis && (
-        <AIReport
-          analysis={analysis.ai_analysis}
-        />
-      )}      
+  <AIReport
+    analysis={analysis.ai_analysis}
+  />
+)}
+
+{analysis && (
+  <IOCPanel
+    iocs={analysis.iocs}
+  />
+)} 
+{analysis && (
+  <ThreatIntelPanel
+    threat={analysis.threat_intelligence}
+  />
+)}
 
     </div>
   );

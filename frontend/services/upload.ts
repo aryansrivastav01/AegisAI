@@ -20,7 +20,28 @@ export interface UploadResponse {
     total_hashes: number;
   };
 
-  threat_intelligence: unknown;
+  threat_intelligence: {
+  ips: {
+    ioc: string;
+    overall_reputation: string;
+    providers: {
+      success: boolean;
+      provider: string;
+      ioc: string;
+      reputation: string;
+      confidence: number;
+      country?: string;
+      network?: string;
+      isp?: string;
+      domain?: string;
+      total_reports?: number;
+      is_whitelisted?: boolean;
+    }[];
+  }[];
+  domains: unknown[];
+  urls: unknown[];
+  hashes: unknown[];
+};
 
   ai_analysis: {
   summary: string;
