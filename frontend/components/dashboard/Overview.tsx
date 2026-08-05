@@ -14,6 +14,7 @@ import AIReport from "./analysis/AIReport";
 import IOCPanel from "./ioc/IOCPanel";
 import ThreatIntelPanel from "./threat/ThreatIntelPanel";
 import ReportDownload from "./report/ReportDownload";
+import ThreatAnalytics from "./analytics/ThreatAnalytics";
 import { uploadSecurityLog, type UploadResponse } from "@/services/upload";
 
 export default function Overview() {
@@ -250,6 +251,11 @@ export default function Overview() {
 {analysis && (
   <ReportDownload
     analysis={analysis}
+  />
+)}
+{analysis && (
+  <ThreatAnalytics
+    summary={analysis.summary}
   />
 )}
 
