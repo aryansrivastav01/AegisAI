@@ -15,6 +15,7 @@ import IOCPanel from "./ioc/IOCPanel";
 import ThreatIntelPanel from "./threat/ThreatIntelPanel";
 import ReportDownload from "./report/ReportDownload";
 import ThreatAnalytics from "./analytics/ThreatAnalytics";
+import HistoryPanel from "./history/HistoryPanel";
 import { uploadSecurityLog, type UploadResponse } from "@/services/upload";
 
 export default function Overview() {
@@ -258,6 +259,14 @@ export default function Overview() {
     summary={analysis.summary}
   />
 )}
+{analysis && (
+  <ThreatAnalytics
+    summary={analysis.summary}
+  />
+)}
+
+<HistoryPanel />
+
 
     </div>
   );
