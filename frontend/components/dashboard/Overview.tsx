@@ -259,11 +259,6 @@ export default function Overview() {
     summary={analysis.summary}
   />
 )}
-{analysis && (
-  <ThreatAnalytics
-    summary={analysis.summary}
-  />
-)}
 
 <HistoryPanel />
 
