@@ -82,3 +82,4 @@ dist/
 *.swp
 *.swo
 
+*.db
