@@ -59,6 +59,8 @@ class AbuseIPDBProvider:
                 "success": False,
                 "provider": "AbuseIPDB",
                 "ioc": ip,
+                "reputation": Reputation.UNKNOWN,
+                "confidence": 0,
                 "error": response.text,
             }
 

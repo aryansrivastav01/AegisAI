@@ -4,10 +4,12 @@ import {
   useEffect,
   useState,
 } from "react";
+import Link from "next/link";
 
 import {
   Clock3,
   FileText,
+  Eye,
 } from "lucide-react";
 
 import {
@@ -38,12 +40,22 @@ export default function HistoryPanel() {
     void load();
   }, []);
 
+  const visibleHistory = history.slice(0, 4);
+
   return (
     <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-6 backdrop-blur-xl">
 
-      <h2 className="mb-6 text-xl font-semibold text-white">
-        Analysis History
-      </h2>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-white">
+          Analysis History
+        </h2>
+
+        {history.length > 4 && (
+          <Link href="/dashboard/reports" className="text-sm text-cyan-400 hover:text-cyan-300">
+            View all
+          </Link>
+        )}
+      </div>
 
       {loading ? (
 
@@ -61,7 +73,7 @@ export default function HistoryPanel() {
 
         <div className="space-y-4">
 
-          {history.map((item) => (
+          {visibleHistory.map((item) => (
 
             <div
               key={item.id}
@@ -110,14 +122,15 @@ export default function HistoryPanel() {
 
               </div>
 
-              <div className="mt-4 flex items-center gap-2 text-sm text-slate-500">
+              <div className="mt-4 flex items-center justify-between gap-2 text-sm text-slate-500">
+                <div className="flex items-center gap-2">
+                  <Clock3 size={15} />
+                  {new Date(item.created_at).toLocaleString()}
+                </div>
 
-                <Clock3 size={15} />
-
-                {new Date(
-                  item.created_at
-                ).toLocaleString()}
-
+                <Link href={`/dashboard/reports/${item.id}`} className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-cyan-300 transition hover:border-cyan-400">
+                  <Eye size={14} /> View report
+                </Link>
               </div>
 
             </div>

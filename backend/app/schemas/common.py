@@ -3,14 +3,6 @@ from enum import Enum
 from pydantic import BaseModel
 
 
-class Reputation(str, Enum):
-    CLEAN = "Clean"
-    LOW = "Low Risk"
-    MEDIUM = "Medium Risk"
-    HIGH = "High Risk"
-    UNKNOWN = "Unknown"
-
-
 class IOCType(str, Enum):
     IP = "ip"
     DOMAIN = "domain"
@@ -18,5 +10,18 @@ class IOCType(str, Enum):
     HASH = "hash"
 
 
-class APIMessage(BaseModel):
+class Reputation(str, Enum):
+    CLEAN = "Clean"
+    LOW_RISK = "Low Risk"
+    MEDIUM_RISK = "Medium Risk"
+    HIGH_RISK = "High Risk"
+    UNKNOWN = "Unknown"
+
+
+class APIResponse(BaseModel):
+    """
+    Standard API response.
+    """
+
+    success: bool
     message: str

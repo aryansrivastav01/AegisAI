@@ -6,6 +6,7 @@ export interface HistoryItem {
   overall_risk: string;
   summary: string;
   created_at: string;
+  analysis_json: Record<string, unknown>;
 }
 
 export async function getHistory(): Promise<HistoryItem[]> {
@@ -16,4 +17,24 @@ export async function getHistory(): Promise<HistoryItem[]> {
   }
 
   return response.json();
+}
+
+export async function getAnalysisById(id: number): Promise<HistoryItem> {
+  const response = await fetch(`${API_BASE_URL}/history/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch report.");
+  }
+
+  return response.json();
+}
+
+export async function deleteAnalysis(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/history/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete report.");
+  }
 }

@@ -57,6 +57,8 @@ class VirusTotalProvider:
                 "success": False,
                 "provider": "VirusTotal",
                 "ioc": ip,
+                "reputation": Reputation.UNKNOWN,
+                "confidence": 0,
                 "error": response.text,
             }
 

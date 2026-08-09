@@ -2,6 +2,7 @@ import asyncio
 
 from app.providers.abuseipdb import AbuseIPDBProvider
 from app.providers.virustotal import VirusTotalProvider
+from app.schemas.common import Reputation
 
 
 class ThreatIntelService:
@@ -31,17 +32,20 @@ class ThreatIntelService:
             abuse_result.get("reputation"),
         ]
 
-        if "High Risk" in reputations:
-            overall = "High Risk"
+        if Reputation.HIGH_RISK.value in reputations:
+            overall = Reputation.HIGH_RISK.value
 
-        elif "Medium Risk" in reputations:
-            overall = "Medium Risk"
+        elif Reputation.MEDIUM_RISK.value in reputations:
+            overall = Reputation.MEDIUM_RISK.value
 
-        elif "Low Risk" in reputations:
-            overall = "Low Risk"
+        elif Reputation.LOW_RISK.value in reputations:
+            overall = Reputation.LOW_RISK.value
+
+        elif Reputation.CLEAN.value in reputations:
+            overall = Reputation.CLEAN.value
 
         else:
-            overall = "Clean"
+            overall = Reputation.UNKNOWN.value
 
         return {
             "ioc": ip,

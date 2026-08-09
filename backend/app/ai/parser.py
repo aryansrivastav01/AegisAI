@@ -3,7 +3,7 @@ import re
 
 from pydantic import ValidationError
 
-from app.ai.schemas import AIAnalysisResponse
+from app.ai.schemas import AIAnalysisResponse, RiskLevel
 
 
 class AIParser:
@@ -60,6 +60,12 @@ class AIParser:
             json_text = cls._extract_json(response)
 
             data = json.loads(json_text)
+
+            if isinstance(data, dict):
+                risk_value = data.get("overall_risk")
+
+                if isinstance(risk_value, str):
+                    data["overall_risk"] = RiskLevel.normalize(risk_value).value
 
             return AIAnalysisResponse.model_validate(data)
 

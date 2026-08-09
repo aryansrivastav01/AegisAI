@@ -19,19 +19,11 @@ export default function UploadWorkspace() {
         onDrop,
       }) => (
         <div className="space-y-8">
-
           <div>
-
-            <h1 className="text-3xl font-bold text-white">
-              Upload Security Logs
-            </h1>
-
+            <h1 className="text-3xl font-bold text-white">Upload Security Logs</h1>
             <p className="mt-2 text-slate-400">
-              Upload JSON logs for IOC extraction,
-              threat intelligence analysis and
-              AI-powered investigation.
+              Upload JSON logs to trigger IOC extraction, threat intelligence enrichment, AI analysis, and database-backed reporting.
             </p>
-
           </div>
 
           <UploadDropzone
@@ -44,19 +36,16 @@ export default function UploadWorkspace() {
           />
 
           <div className="grid gap-6 lg:grid-cols-2">
-
-            <UploadProgress
-              loading={loading}
-            />
-
-            <UploadStatus
-              analysis={analysis}
-            />
-
+            <UploadProgress loading={loading} analysis={analysis} />
+            <UploadStatus analysis={analysis} />
           </div>
 
-          <RecentUploads />
-
+          <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-6">
+            <h2 className="text-xl font-semibold text-white">Recent Uploads</h2>
+            <div className="mt-4">
+              <RecentUploads />
+            </div>
+          </div>
         </div>
       )}
     </UploadManager>

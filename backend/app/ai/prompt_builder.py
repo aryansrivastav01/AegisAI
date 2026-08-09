@@ -23,9 +23,25 @@ Return JSON using exactly this schema:
 
 {
     "summary": "string",
+    "executive_summary": "string",
     "overall_risk": "Low | Medium | High | Critical | Unknown",
     "confidence": 0,
     "findings": [
+        "string"
+    ],
+    "risk_explanation": [
+        "string"
+    ],
+    "timeline": [
+        "string"
+    ],
+    "mitre": [
+        {
+            "tactic": "string",
+            "techniques": ["string"]
+        }
+    ],
+    "narrative": [
         "string"
     ],
     "recommendations": [
