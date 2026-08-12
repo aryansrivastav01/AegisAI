@@ -6,10 +6,23 @@ export async function apiFetch<T>(
   endpoint: string,
   options?: RequestInit
 ): Promise<T> {
+  const headers: Record<string, string> = {};
+  
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
   const response = await fetch(
     `${API_BASE_URL}${endpoint}`,
     {
       ...options,
+      headers: {
+        ...headers,
+        ...options?.headers,
+      },
     }
   );
 

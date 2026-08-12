@@ -29,7 +29,7 @@ export default function Navbar() {
           <div>
 
             <h2 className="text-xl font-bold text-white">
-              AegisAI
+              ElyvexAI
             </h2>
 
             <p className="-mt-1 text-xs text-slate-400">
@@ -73,7 +73,7 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="https://github.com/aryansrivastav01/AegisAI#readme"
+            href="https://github.com/aryansrivastav01/ElyvexAI#readme"
             target="_blank"
             className="transition hover:text-cyan-300"
           >
@@ -87,12 +87,17 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
 
           <Link
-            href="https://github.com/aryansrivastav01/AegisAI"
-            target="_blank"
-            className="hidden items-center gap-2 rounded-xl border border-cyan-400/20 bg-cyan-400 px-5 py-2 font-semibold text-slate-950 transition hover:scale-105 lg:flex"
+            href="/login"
+            className="hidden px-4 text-sm font-medium text-slate-300 transition hover:text-cyan-400 lg:block"
           >
-            <ArrowUpRight size={18} />
-GitHub
+            Sign In
+          </Link>
+
+          <Link
+            href="/register"
+            className="hidden items-center gap-2 rounded-xl border border-cyan-400/20 bg-cyan-400 px-5 py-2 text-sm font-semibold text-slate-950 transition hover:scale-105 hover:bg-cyan-300 lg:flex"
+          >
+            Sign Up
           </Link>
 
           <button className="rounded-xl border border-white/10 p-2 text-white lg:hidden">

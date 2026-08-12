@@ -7,6 +7,6 @@ router = APIRouter()
 def health_check():
     return {
         "status": "healthy",
-        "service": "AegisAI",
+        "service": "ElyvexAI",
         "version": "0.0.1"
     }

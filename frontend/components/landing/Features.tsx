@@ -84,7 +84,7 @@ export default function Features() {
 
           <p className="mt-6 text-lg text-slate-400">
 
-            AegisAI combines threat intelligence,
+            ElyvexAI combines threat intelligence,
             AI reasoning and security automation
             into one unified platform.
 

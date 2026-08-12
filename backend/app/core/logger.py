@@ -5,9 +5,9 @@ from pathlib import Path
 LOG_DIR = Path("logs")
 LOG_DIR.mkdir(exist_ok=True)
 
-LOG_FILE = LOG_DIR / "aegisai.log"
+LOG_FILE = LOG_DIR / "elyvexai.log"
 
-logger = logging.getLogger("AegisAI")
+logger = logging.getLogger("ElyvexAI")
 logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter(

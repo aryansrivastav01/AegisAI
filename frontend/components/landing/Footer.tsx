@@ -30,7 +30,7 @@ export default function Footer() {
               <div>
 
                 <h2 className="text-2xl font-bold">
-                  AegisAI
+                  ElyvexAI
                 </h2>
 
                 <p className="text-xs text-slate-500">
@@ -88,7 +88,7 @@ export default function Footer() {
             <div className="space-y-3 text-slate-400">
 
               <Link
-                href="https://github.com/aryansrivastav01/AegisAI"
+                href="https://github.com/aryansrivastav01/ElyvexAI"
                 target="_blank"
                 className="flex items-center gap-2 hover:text-cyan-300"
               >
@@ -97,7 +97,7 @@ GitHub
               </Link>
 
               <Link
-                href="https://github.com/aryansrivastav01/AegisAI#readme"
+                href="https://github.com/aryansrivastav01/ElyvexAI#readme"
                 target="_blank"
                 className="flex items-center gap-2 hover:text-cyan-300"
               >
@@ -123,7 +123,7 @@ GitHub
 
                 <Mail size={16} />
 
-                contact@aegisai.dev
+                contact@elyvexai.dev
 
               </div>
 
@@ -140,7 +140,7 @@ GitHub
         <div className="mt-16 flex flex-col items-center justify-between gap-5 border-t border-white/10 pt-8 text-sm text-slate-500 md:flex-row">
 
           <p>
-            © 2026 AegisAI. All Rights Reserved.
+            © 2026 ElyvexAI. All Rights Reserved.
           </p>
 
           <p>

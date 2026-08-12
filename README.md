@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ AegisAI
+# 🛡️ ElyvexAI
 
 ### AI-Powered Threat Intelligence & SOC Analysis Platform
 
@@ -22,9 +22,9 @@ An intelligent SOC analyst that combines Threat Intelligence, IOC Correlation an
 
 # 📖 Overview
 
-AegisAI is an AI-powered cybersecurity platform that automates the early stages of Security Operations Center (SOC) investigations.
+ElyvexAI is an AI-powered cybersecurity platform that automates the early stages of Security Operations Center (SOC) investigations.
 
-Instead of only extracting Indicators of Compromise (IOCs), AegisAI correlates indicators with multiple Threat Intelligence providers and generates structured AI-assisted security assessments using a locally hosted Large Language Model (LLM).
+Instead of only extracting Indicators of Compromise (IOCs), ElyvexAI correlates indicators with multiple Threat Intelligence providers and generates structured AI-assisted security assessments using a locally hosted Large Language Model (LLM).
 
 The project follows a modular, production-oriented backend architecture built with FastAPI and is designed to evolve into a complete SOC investigation platform.
 
@@ -103,7 +103,7 @@ K --> L[API Response]
 # 📂 Project Structure
 
 ```text
-AegisAI/
+ElyvexAI/
 │
 ├── backend/
 │   ├── app/
@@ -167,7 +167,7 @@ SOC Analyst Output
 
 ## Prerequisites
 
-Before running AegisAI, ensure the following software is installed:
+Before running ElyvexAI, ensure the following software is installed:
 
 - Python 3.13+
 - Git
@@ -183,9 +183,9 @@ Before running AegisAI, ensure the following software is installed:
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/aryansrivastav01/AegisAI.git
+git clone https://github.com/aryansrivastav01/ElyvexAI.git
 
-cd AegisAI/backend
+cd ElyvexAI/backend
 ```
 
 ---
@@ -261,7 +261,7 @@ llama3.1:8b
 Create a `.env` file inside the backend directory.
 
 ```env
-APP_NAME=AegisAI
+APP_NAME=ElyvexAI
 APP_VERSION=1.0.0
 DEBUG=True
 
@@ -362,7 +362,7 @@ python -m tests.test_abuseipdb
 ---
 # 🤖 AI Analysis Pipeline
 
-AegisAI uses a structured AI pipeline instead of directly sending uploaded data to a Large Language Model.
+ElyvexAI uses a structured AI pipeline instead of directly sending uploaded data to a Large Language Model.
 
 Each stage validates, enriches and transforms data before AI analysis.
 
@@ -558,7 +558,7 @@ docs/images/dashboard.png
 
 Contributions are welcome.
 
-If you would like to improve AegisAI:
+If you would like to improve ElyvexAI:
 
 1. Fork the repository.
 2. Create a feature branch.
@@ -576,7 +576,7 @@ Please ensure that:
 
 # 🧪 Development Principles
 
-AegisAI follows a production-oriented development approach.
+ElyvexAI follows a production-oriented development approach.
 
 Core principles:
 
@@ -648,7 +648,7 @@ For suggestions, collaborations or discussions:
 
 GitHub Issues
 
-https://github.com/aryansrivastav01/AegisAI/issues
+https://github.com/aryansrivastav01/ElyvexAI/issues
 
 ---
 
@@ -668,7 +668,7 @@ Special thanks to the open-source community and the developers of:
 
 <div align="center">
 
-## 🛡️ AegisAI
+## 🛡️ ElyvexAI
 
 ### AI-Powered Threat Intelligence & SOC Analysis Platform
 

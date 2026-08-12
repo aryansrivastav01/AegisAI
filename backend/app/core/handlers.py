@@ -1,16 +1,16 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from app.core.exceptions import AegisAIException
+from app.core.exceptions import ElyvexAIException
 from app.core.logger import logger
 
 
 async def aegis_exception_handler(
     request: Request,
-    exc: AegisAIException,
+    exc: ElyvexAIException,
 ):
     """
-    Handle all custom AegisAI exceptions.
+    Handle all custom ElyvexAI exceptions.
     """
 
     logger.error(

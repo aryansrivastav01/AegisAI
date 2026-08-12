@@ -1,6 +1,6 @@
-class AegisAIException(Exception):
+class ElyvexAIException(Exception):
     """
-    Base exception for AegisAI.
+    Base exception for ElyvexAI.
     """
 
     def __init__(
@@ -13,7 +13,7 @@ class AegisAIException(Exception):
         super().__init__(message)
 
 
-class InvalidFileException(AegisAIException):
+class InvalidFileException(ElyvexAIException):
     """
     Raised when an unsupported file type is uploaded.
     """
@@ -25,7 +25,7 @@ class InvalidFileException(AegisAIException):
         )
 
 
-class InvalidJSONException(AegisAIException):
+class InvalidJSONException(ElyvexAIException):
     """
     Raised when uploaded JSON is invalid.
     """
@@ -37,7 +37,7 @@ class InvalidJSONException(AegisAIException):
         )
 
 
-class FileTooLargeException(AegisAIException):
+class FileTooLargeException(ElyvexAIException):
     """
     Raised when uploaded file exceeds size limit.
     """
@@ -49,7 +49,7 @@ class FileTooLargeException(AegisAIException):
         )
 
 
-class AIAnalysisException(AegisAIException):
+class AIAnalysisException(ElyvexAIException):
     """
     Raised when AI analysis fails.
     """

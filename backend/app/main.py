@@ -4,9 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.health import router as health_router
 from app.api.upload import router as upload_router
 from app.api.history import router as history_router
+from app.api.auth import router as auth_router
 
 from app.core.config import settings
-from app.core.exceptions import AegisAIException
+from app.core.exceptions import ElyvexAIException
 from app.core.handlers import (
     aegis_exception_handler,
     unhandled_exception_handler,
@@ -34,7 +35,7 @@ app.add_middleware(
 )
 
 app.add_exception_handler(
-    AegisAIException,
+    ElyvexAIException,
     aegis_exception_handler,
 )
 
@@ -46,6 +47,7 @@ app.add_exception_handler(
 app.include_router(health_router)
 app.include_router(upload_router)
 app.include_router(history_router)
+app.include_router(auth_router)
 
 
 @app.on_event("startup")

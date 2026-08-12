@@ -1,12 +1,12 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "sqlite:///./aegisai.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:elyvex%402026@localhost/elyvexaidb")
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False},
 )
 
 SessionLocal = sessionmaker(

@@ -6,26 +6,33 @@ import {
   Bell,
   Search,
   UserCircle2,
+  LogOut,
 } from "lucide-react";
 import { getHistory, type HistoryItem } from "@/services/history";
+import { getMe } from "@/services/auth";
 
 export default function Header() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [notifications, setNotifications] = useState<HistoryItem[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [user, setUser] = useState<{ full_name: string; email: string } | null>(null);
 
   useEffect(() => {
-    async function loadAlerts() {
+    async function loadData() {
       try {
-        const data = await getHistory();
-        const highRisk = data.filter((item) => item.overall_risk === "High Risk");
+        const [alertsData, userData] = await Promise.all([
+          getHistory(),
+          getMe() as Promise<any>,
+        ]);
+        const highRisk = alertsData.filter((item) => item.overall_risk === "High Risk");
         setNotifications(highRisk);
+        setUser(userData);
       } catch (e) {
         console.error(e);
       }
     }
-    void loadAlerts();
+    void loadData();
   }, []);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -39,7 +46,7 @@ export default function Header() {
     <header className="flex h-20 items-center justify-between border-b border-white/10 bg-slate-950/60 px-8 backdrop-blur-xl relative z-50">
       <div>
         <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="mt-1 text-sm text-slate-400">Welcome back, Aryan 👋</p>
+        <p className="mt-1 text-sm text-slate-400">Welcome back, {user ? user.full_name.split(' ')[0] : 'Analyst'} 👋</p>
       </div>
 
       <div className="flex items-center gap-5">
@@ -87,10 +94,21 @@ export default function Header() {
         <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-slate-900 px-4 py-2">
           <UserCircle2 className="text-cyan-400" size={34} />
           <div>
-            <p className="text-sm font-semibold text-white">Aryan</p>
-            <p className="text-xs text-slate-400">Administrator</p>
+            <p className="text-sm font-semibold text-white">{user ? user.full_name : 'Analyst'}</p>
+            <p className="text-xs text-slate-400">User</p>
           </div>
         </div>
+
+        <button 
+          onClick={() => {
+            localStorage.removeItem("token");
+            router.push("/login");
+          }}
+          className="flex items-center justify-center rounded-xl border border-white/10 bg-slate-900 p-3 text-slate-300 transition hover:border-red-500/50 hover:text-red-400 hover:bg-red-500/10"
+          title="Sign Out"
+        >
+          <LogOut size={22} />
+        </button>
       </div>
     </header>
   );

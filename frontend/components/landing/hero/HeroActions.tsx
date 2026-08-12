@@ -37,7 +37,7 @@ export default function HeroActions() {
         </Link>
 
         <Link
-          href="https://github.com/aryansrivastav01/AegisAI"
+          href="https://github.com/aryansrivastav01/ElyvexAI"
           target="_blank"
           className="group inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-900/60 px-8 py-4 font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/40 hover:bg-slate-800"
         >
