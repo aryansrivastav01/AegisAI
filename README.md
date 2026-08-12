@@ -46,6 +46,10 @@ The project follows a modular, production-oriented backend architecture built wi
 - Swagger Documentation
 - Production Logging
 - Centralized Exception Handling
+- Modern Next.js Dashboard (Glassmorphism UI)
+- PostgreSQL Database Integration
+- JWT-based Authentication & Authorization
+- Persistent Analysis History
 
 ---
 
@@ -97,6 +101,10 @@ K --> L[API Response]
 | API Docs | Swagger UI |
 | Testing | Python |
 | Version Control | Git + GitHub |
+| Frontend | Next.js + React |
+| Styling | Tailwind CSS |
+| Database | PostgreSQL |
+| Auth | JWT (PyJWT + bcrypt) |
 
 ---
 
@@ -119,9 +127,9 @@ ElyvexAI/
 │   ├── requirements.txt
 │   └── .env.example
 │
-├── frontend/            # Coming Soon
+├── frontend/            # Next.js App Router UI
 │
-├── docs/                # Coming Soon
+├── docs/
 │
 └── README.md
 ```
@@ -175,6 +183,8 @@ Before running ElyvexAI, ensure the following software is installed:
 - Llama 3.1 Model
 - VirusTotal API Key
 - AbuseIPDB API Key
+- PostgreSQL Database
+- Node.js (v18+)
 
 ---
 
@@ -258,7 +268,9 @@ llama3.1:8b
 
 # ⚙️ Environment Configuration
 
-Create a `.env` file inside the backend directory.
+## Backend Configuration
+
+Create a `.env` file inside the `backend` directory.
 
 ```env
 APP_NAME=ElyvexAI
@@ -267,6 +279,7 @@ DEBUG=True
 
 SECRET_KEY=change_this_secret_key
 JWT_ALGORITHM=HS256
+DATABASE_URL=postgresql://postgres:elyvex%402026@localhost/elyvexaidb
 
 VIRUSTOTAL_API_KEY=your_api_key
 ABUSEIPDB_API_KEY=your_api_key
@@ -274,6 +287,14 @@ ABUSEIPDB_API_KEY=your_api_key
 OLLAMA_BASE_URL=http://localhost:11434
 LLM_PROVIDER=ollama
 OLLAMA_MODEL=llama3.1:8b
+```
+
+## Frontend Configuration
+
+Create a `.env.local` file inside the `frontend` directory.
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ---
@@ -294,18 +315,29 @@ ollama serve
 
 ---
 
-Start FastAPI
+Start FastAPI Backend
 
 ```bash
+cd backend
 uvicorn app.main:app --reload
 ```
 
 ---
 
-Open Swagger
+Start Next.js Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+Open Dashboard
 
 ```
-http://127.0.0.1:8000/docs
+http://localhost:3000
 ```
 
 ---
@@ -504,20 +536,22 @@ docs/images/dashboard.png
 
 ---
 
-## 🚀 Version 2.0
+## ✅ Version 2.0 (Current)
 
-- PostgreSQL
-- Authentication
-- User Accounts
-- Report History
-- Search
-- Export Reports
+- PostgreSQL Database Migration
+- JWT Authentication & User Accounts
+- Persistent Report History
+- Next.js Web Dashboard
+
+## 🚀 Version 2.1
+
+- Advanced Search & Filtering
+- Export Reports (PDF/CSV)
 
 ---
 
 ## 🚀 Version 3.0
 
-- Frontend Dashboard
 - MITRE ATT&CK Mapping
 - CVE Correlation
 - GeoIP Enrichment
@@ -551,7 +585,7 @@ docs/images/dashboard.png
 | Documentation | 🚧 In Progress |
 | Docker | 🚧 Planned |
 | CI/CD | 🚧 Planned |
-| Frontend | 🚧 Planned |
+| Frontend | ✅ Complete |
 
 ---
 # 🤝 Contributing
