@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.user import User
-from app.schemas.user import UserCreate, UserLogin, Token, UserResponse
-from app.core.security import get_password_hash, verify_password, create_access_token
+from app.schemas.user import UserCreate, UserLogin, Token, UserResponse, ForgotPassword, ResetPassword
+from app.core.security import get_password_hash, verify_password, create_access_token, create_password_reset_token, verify_password_reset_token
+from app.utils.email import send_reset_password_email
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -77,3 +78,33 @@ def get_current_user(
 @router.get("/me", response_model=UserResponse)
 def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.post("/forgot-password")
+def forgot_password(data: ForgotPassword, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == data.email).first()
+    if not user:
+        return {"message": "If that email is registered, we have sent a reset link."}
+    
+    token = create_password_reset_token(email=user.email)
+    background_tasks.add_task(send_reset_password_email, user.email, token)
+    return {"message": "If that email is registered, we have sent a reset link."}
+
+@router.post("/reset-password")
+def reset_password(data: ResetPassword, db: Session = Depends(get_db)):
+    email = verify_password_reset_token(data.token)
+    if not email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token"
+        )
+    
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    user.hashed_password = get_password_hash(data.new_password)
+    db.commit()
+    return {"message": "Password has been updated successfully"}

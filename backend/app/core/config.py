@@ -26,6 +26,14 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     gemini_model: str = "gemini-3.5-flash"
 
+    # SMTP for emails
+    smtp_server: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: str = ""
+    emails_from_email: str = ""
+    frontend_url: str = "http://localhost:3000"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=False,
@@ -77,7 +85,6 @@ class Settings(BaseSettings):
                 raise RuntimeError(
                     "GEMINI_API_KEY is missing."
                 )
-
 
 settings = Settings()
 

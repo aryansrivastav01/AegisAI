@@ -23,3 +23,23 @@ export async function register(data: Record<string, any>) {
 export async function getMe() {
   return apiFetch("/auth/me");
 }
+
+export async function forgotPassword(data: Record<string, any>) {
+  return apiFetch("/auth/forgot-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+}
+
+export async function resetPassword(data: Record<string, any>) {
+  return apiFetch("/auth/reset-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+}
